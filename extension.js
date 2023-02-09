@@ -1,6 +1,6 @@
 module.exports = {
     "name": "CanvasCard",
-    "publisher": "Sample",
+    "publisher": "University of the Incarnate Word",
     "cards": [{
         "type": "CanvasCardCard",
         "source": "./src/cards/CanvasCardCard",
