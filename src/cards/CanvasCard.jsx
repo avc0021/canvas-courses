@@ -13,7 +13,7 @@ const styles = () => ({
     }
 });
 
-const CanvasCardCard = (props) => {
+const Canvascard = (props) => {
     const { classes } = props;
 
     return (
@@ -33,8 +33,8 @@ const CanvasCardCard = (props) => {
     );
 };
 
-CanvasCardCard.propTypes = {
+Canvascard.propTypes = {
     classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(CanvasCardCard);
+export default withStyles(styles)(Canvascard);
