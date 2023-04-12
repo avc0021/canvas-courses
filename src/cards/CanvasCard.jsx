@@ -1,40 +1,33 @@
-import { withStyles } from '@ellucian/react-design-system/core/styles';
-import { spacing40 } from '@ellucian/react-design-system/core/styles/tokens';
-import { Typography, TextLink } from '@ellucian/react-design-system/core';
-import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+// import canvas from 
 
-const styles = () => ({
-    card: {
-        marginTop: 0,
-        marginRight: spacing40,
-        marginBottom: 0,
-        marginLeft: spacing40
-    }
-});
+function CanvasCard() {
+  const [canvas, setCanvas] = useState("");
 
-const Canvascard = (props) => {
-    const { classes } = props;
+  useEffect(() => {
+    const apiKey = '13946~HgIECpPhd6zOjhdFna18iEXooHwv9Ae78QNkDPTmCWHcQiUgIXwArN0qkNVG2z4y';
 
-    return (
-        <div className={classes.card}>
-            <Typography variant="h2">
-                Hello CanvasCard World
-            </Typography>
-            <Typography>
-                <span>
-                    For sample extensions, visit the Ellucian Developer
-                </span>
-                <TextLink href="https://github.com/ellucian-developer/experience-extension-sdk-samples" target="_blank">
-                     GitHub
-                </TextLink>
-            </Typography>
-        </div>
-    );
-};
+    fetch('https://uiw.test.instructure.com/api/v1/users/self', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`
+      },
+      mode: 'cors'
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+}, []);
 
-Canvascard.propTypes = {
-    classes: PropTypes.object.isRequired
-};
+  return (
+    <div>
+      <h2>Canvas Test</h2>
+      <p>{canvas}</p>
+    </div>
+  );
+}
 
-export default withStyles(styles)(Canvascard);
+export default CanvasCard;
