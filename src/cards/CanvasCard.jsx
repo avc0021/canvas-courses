@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-// import canvas from 
+import React, {useState, useEffect} from 'react';
 
 function CanvasCard() {
   const [canvas, setCanvas] = useState("");
@@ -20,8 +19,7 @@ function CanvasCard() {
       .catch(error => {
         console.error(error);
       });
-}, []);
-
+}, [])
   return (
     <div>
       <h2>Canvas Test</h2>
