@@ -1,12 +1,12 @@
 module.exports = {
-    "name": "CanvasCard",
+    "name": "Canvas",
     "publisher": "University of the Incarnate Word",
     "cards": [{
-        "type": "Canvascard",
+        "type": "Canvas",
         "source": "./src/cards/Canvascard",
-        "title": "CanvasCard Card",
-        "displayCardType": "CanvasCard Card",
-        "description": "This is an introductory card to the Ellucian Experience SDK",
+        "title": "Canvas",
+        "displayCardType": "Canvas Card",
+        "description": "This card displays data from Canvas",
         "pageRoute": {
             "route": "/",
             "excludeClickSelectors": ['a']
