@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Button, makeStyles } from '@ellucian/react-design-system/core';
-import { spacing40, spacing30 } from '@ellucian/react-design-system/core/styles/tokens'
+import React, { useEffect, useState } from "react";
+import { Button, makeStyles } from "@ellucian/react-design-system/core";
+import {
+  spacing40,
+  spacing30
+} from "@ellucian/react-design-system/core/styles/tokens";
 
-// Utility function to parse the authorization code from the URL
-function getCodeFromURL() {
-  const queryParams = new URLSearchParams(window.location.search);
-  return queryParams.get('code');
-}
-
-// Add your styles here
 const useStyles = makeStyles((theme) => ({
   canvasLogin: {
     marginLeft: spacing40,
@@ -21,74 +17,70 @@ function App() {
   const [data, setData] = useState(null);
   const classes = useStyles();
 
-  useEffect(() => {
-    // Get the authorization code from the URL
-    const code = getCodeFromURL();
+  const handleButtonClick = () => {
+    const authUrl = `https://canvas.uiw.edu/login/oauth2/auth?client_id=139460000000000141&response_type=code&redirect_uri=https%3A%2F%2Fexperience-test.elluciancloud.com%2Fuotiwtest%2F&scope=url%3AGET%7C%2Fapi%2Fv1%2Fcourses`;
+    window.location.href = authUrl;
+  };
 
-    // If there is a code in the URL, we've just been redirected from the authorization server
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+
     if (code) {
-      // Make a POST request to exchange our authorization code for an access token
-      fetch('https://canvas.instructure.com/login/oauth2/token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-          ClientId: '139460000000000141',
-          redirectUri: 'https://experience-test.elluciancloud.com/uotiwtest/',
-          clientSecret: 'MXfTiOCMvxHtg7NEJ5ce8TIRs44EpaAoaX33HwtYWkvP5kOlUTGM7yRzQnGr3Za3',
-          code,
-          grantType: 'authorization_code'
+      fetch(`https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?code=${code}`)
+        .then((response) => {
+          if (!response.ok) {
+            // Return response so we can access the body in the catch block
+            return Promise.reject(response);
+          }
+          return response.json();
         })
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          // Store the access token in the state
-          setAccessToken(json.access_token);
+        .then((data) => {
+          if (data && data.access_token) {
+            setAccessToken(data.access_token);
+          } else {
+            console.error('The response object or the access_token is undefined.');
+          }
         })
-        .catch((err) => console.error('Error:', err));
+        .catch((errorResponse) => {
+          // Parse the JSON from the response
+          errorResponse.json().then((error) => {
+            console.error('There was an error with the fetch operation:', error.errorMessage);
+          }).catch((error) => {
+            console.error('There was an error with the fetch operation:', error);
+          });
+        });
+
+      urlParams.delete("code");
+      window.history.replaceState({}, "", `${window.location.pathname}?${urlParams}`);
     }
   }, []);
 
-  // Once we have the access token, we can use it to make authenticated requests to the API
   useEffect(() => {
     if (accessToken) {
-      fetch('https://canvas.instructure.com/api/v1/accounts/ACCOUNT_ID/analytics/current/statistics', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          // Store the data from the API in the state
-          setData(json);
+      fetch(`https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?token=${accessToken}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
         })
-        .catch((err) => console.error('Error:', err));
+        .then((data) => setData(data))
+        .catch((error) => console.error('There was an error with the fetch operation:', error));
     }
   }, [accessToken]);
 
-  // If we don't have an access token yet, display the link to the authorization server
-  if (!accessToken) {
-    return (
-      <Button
-        className={classes.canvasLogin}
-        color='secondary'
-        onClick={() => {
-          window.location.href = `https://canvas.instructure.com/login/oauth2/auth?client_id=139460000000000141&response_type=code&redirect_uri=https://experience-test.elluciancloud.com/uotiwtest/&scope=url:GET|/api/v1/accounts/:account_id/analytics/current/statistics`;
-        }}
-      >
-        Log in
-      </Button>
-    );
-  }
-
-  // If we have an access token but no data yet, display a loading message
-  if (!data) {
-    return <p>Loading...</p>;
-  }
-
-  // If we have data, display it
-  return <pre>{JSON.stringify(data, null, 2)}</pre>;
+  return (
+    <div>
+      {!accessToken && (
+        <Button color="secondary" onClick={handleButtonClick} className={classes.canvasLogin}>
+          Log in
+        </Button>
+      )}
+      {accessToken && !data && <p>Loading...</p>}
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+    </div>
+  );
 }
 
 export default App;

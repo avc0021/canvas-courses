@@ -11,8 +11,5 @@ module.exports = {
             "route": "/",
             "excludeClickSelectors": ['a']
         }
-    }],
-    "page": {
-        "source": "./src/page/router.jsx"
-    }
+    }]
 }
