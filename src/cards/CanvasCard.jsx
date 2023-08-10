@@ -18,7 +18,7 @@ function App() {
   const classes = useStyles();
 
   const handleButtonClick = () => {
-    const authUrl = `https://canvas.uiw.edu/login/oauth2/auth?client_id=139460000000000141&response_type=code&redirect_uri=https%3A%2F%2Fexperience-test.elluciancloud.com%2Fuotiwtest%2F&scope=url%3AGET%7C%2Fapi%2Fv1%2Fcourses`;
+    const authUrl = `https://canvas.uiw.edu/login/oauth2/auth?client_id=139460000000000141&response_type=code&redirect_uri=https://experience-test.elluciancloud.com/uotiwtest/&scope=url:GET|/api/v1/courses`;
     window.location.href = authUrl;
   };
 
@@ -30,8 +30,7 @@ function App() {
       fetch(`https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?code=${code}`)
         .then((response) => {
           if (!response.ok) {
-            // Return response so we can access the body in the catch block
-            return Promise.reject(response);
+            throw new Error(`Fetch operation 1 failed with status: ${response.status}`);
           }
           return response.json();
         })
@@ -39,17 +38,10 @@ function App() {
           if (data && data.access_token) {
             setAccessToken(data.access_token);
           } else {
-            console.error('The response object or the access_token is undefined.');
+            console.error('Fetch operation 1: The response object or the access_token is undefined.');
           }
         })
-        .catch((errorResponse) => {
-          // Parse the JSON from the response
-          errorResponse.json().then((error) => {
-            console.error('There was an error with the fetch operation:', error.errorMessage);
-          }).catch((error) => {
-            console.error('There was an error with the fetch operation:', error);
-          });
-        });
+        .catch((error) => console.error('Fetch operation 1: There was an error:', error));
 
       urlParams.delete("code");
       window.history.replaceState({}, "", `${window.location.pathname}?${urlParams}`);
@@ -61,12 +53,12 @@ function App() {
       fetch(`https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?token=${accessToken}`)
         .then((response) => {
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`Fetch operation 2 failed with status: ${response.status}`);
           }
           return response.json();
         })
         .then((data) => setData(data))
-        .catch((error) => console.error('There was an error with the fetch operation:', error));
+        .catch((error) => console.error('Fetch operation 2: There was an error:', error));
     }
   }, [accessToken]);
 
