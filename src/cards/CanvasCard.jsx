@@ -1,78 +1,57 @@
-import React, { useEffect, useState } from "react";
-import { Button, makeStyles } from "@ellucian/react-design-system/core";
-import {
-  spacing40,
-  spacing30
-} from "@ellucian/react-design-system/core/styles/tokens";
+import React, { useEffect, useState } from 'react';
+import { Table, TableBody, TableCell, TableRow, TableHead, Typography } from '@ellucian/react-design-system/core'
+import { spacing40 } from '@ellucian/react-design-system/core/styles/tokens';
 
-const useStyles = makeStyles((theme) => ({
-  canvasLogin: {
-    marginLeft: spacing40,
-    marginTop: spacing30
-  }
-}));
+const columnStyles = {
+  // textAlign: 'center',
+  // verticalAlign: 'middle'
+  height: '100%',
+  marginTop: 0,
+  marginRight: spacing40,
+  marginBottom: 0,
+  marginLeft: spacing40,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around'
+};
 
-function App() {
-  const [accessToken, setAccessToken] = useState(null);
-  const [data, setData] = useState(null);
-  const classes = useStyles();
-
-  const handleButtonClick = () => {
-    const authUrl = `https://canvas.uiw.edu/login/oauth2/auth?client_id=139460000000000141&response_type=code&redirect_uri=https://experience-test.elluciancloud.com/uotiwtest/&scope=url:GET|/api/v1/users/:user_id/courses`;
-    window.location.href = authUrl;
-  };
+const CanvasCourses = () => {
+  const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-
-    if (code) {
-      fetch(`https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?code=${code}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Fetch operation 1 failed with status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          if (data && data.access_token) {
-            setAccessToken(data.access_token);
-          } else {
-            console.error('Fetch operation 1: The response object or the access_token is undefined.');
-          }
-        })
-        .catch((error) => console.error('Fetch operation 1: There was an error:', error));
-
-      urlParams.delete("code");
-      window.history.replaceState({}, "", `${window.location.pathname}?${urlParams}`);
-    }
+    fetch('https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler', {
+      method: 'GET'
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(data => setCourses(data))
+    .catch(error => console.error('Error fetching data:', error));
   }, []);
 
-  useEffect(() => {
-    if (accessToken) {
-      fetch(`https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?token=${accessToken}`)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Fetch operation 2 failed with status: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => setData(data))
-        .catch((error) => console.error('Fetch operation 2: There was an error:', error));
-    }
-  }, [accessToken]);
-
   return (
-    <div>
-      {!accessToken && (
-        <Button color="secondary" onClick={handleButtonClick} className={classes.canvasLogin}>
-          Log in
-        </Button>
-      )}
-      {accessToken && !data && <p>Loading...</p>}
-      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
-    </div>
-  );
-}
+  <div>
+  <Table striped bordered hover>
+    {/* <TableHead>
+      <TableRow>
+        <TableCell style={columnStyles} align="left">Course Name</TableCell>
+        <TableCell style={columnStyles} align="left">Grade</TableCell>
+      </TableRow>
+    </TableHead> */}
+    <TableBody>
+      {courses.map(course => (
+        <TableRow key={course.id}>
+          <TableCell style={columnStyles}>Course: {course.name}</TableCell>
+          <TableCell style={columnStyles}>Grade: {course.enrollments[0]?.computed_current_score || 'N/A'}</TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+  </Table>
+</div>
+)
+};
 
-export default App;
+export default CanvasCourses;

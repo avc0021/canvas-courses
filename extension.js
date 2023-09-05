@@ -7,9 +7,13 @@ module.exports = {
         "title": "Canvas",
         "displayCardType": "Canvas Card",
         "description": "This card displays data from Canvas",
-        "pageRoute": {
-            "route": "/",
-            "excludeClickSelectors": ['a']
-        }
+        // "configuration": {
+        //     client: [{
+        //         key: 'lambdaUrl',
+        //         label: 'Lambda URL',
+        //         type: 'text',
+        //         required: true
+        //     }]
+        // }
     }]
 }
