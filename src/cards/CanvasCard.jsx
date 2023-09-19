@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, TableBody, TableCell, TableRow, TableHead, Typography } from '@ellucian/react-design-system/core'
+import { Table, TableBody, TableCell, TableRow } from '@ellucian/react-design-system/core'
 import { spacing40 } from '@ellucian/react-design-system/core/styles/tokens';
 
 const columnStyles = {
@@ -35,17 +35,11 @@ const CanvasCourses = () => {
   return (
   <div>
   <Table striped bordered hover>
-    {/* <TableHead>
-      <TableRow>
-        <TableCell style={columnStyles} align="left">Course Name</TableCell>
-        <TableCell style={columnStyles} align="left">Grade</TableCell>
-      </TableRow>
-    </TableHead> */}
     <TableBody>
       {courses.map(course => (
         <TableRow key={course.id}>
-          <TableCell style={columnStyles}>Course: {course.name}</TableCell>
-          <TableCell style={columnStyles}>Grade: {course.enrollments[0]?.computed_current_score || 'N/A'}</TableCell>
+          {/* <TableCell style={columnStyles}>Course: {course.name}</TableCell> */}
+          <TableCell style={columnStyles}>{course.name} - {course.enrollments[0]?.computed_current_score || 'N/A'}</TableCell>
         </TableRow>
       ))}
     </TableBody>
