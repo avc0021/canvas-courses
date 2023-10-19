@@ -3,3 +3,5 @@ Will need to reset account in Dev environment and double check api keys after ev
 
 This card displays courses and grades for a user in a single row. Currently as of (9-19-23) the API call is hardcoded for testing purposes. 
 
+# Additional Notes: 
+Disregard i18n and utils directories. These were created for testing purposes. They are not incorporated into the final card in production. 
