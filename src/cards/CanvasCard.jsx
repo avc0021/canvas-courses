@@ -161,20 +161,16 @@ const CanvasCard = (props) => {
                                         </TableBody>
                                     </Table>
                                 ) : (
-                                    <div className={classes.text}>
-                                        Opportunity starts here!
-                                        <div style={{ marginTop: '20px' }}>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                href="https://www.uiw.edu/admissions/"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Enroll Now
-                                            </Button>
-                                        </div>
-                                    </div>
+                                    <div>
+                                    <p>We apologize for the inconvenience. There seems to be an issue.</p>
+                                    <p>Please email <a href="mailto:webteam@uiwtx.edu">webteam@uiwtx.edu</a> with the following information:</p>
+                                    <ul>
+                                    <li>A screenshot of the issue you&apos;re facing.</li>
+                                      <li>The device you are using.</li>
+                                      <li>The browser you are on.</li>
+                                      <li>Any other information you think might be useful.</li>
+                                    </ul>
+                                  </div>
                                 )}
                             </Fragment>
                         );
