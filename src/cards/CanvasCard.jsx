@@ -10,7 +10,7 @@ const columnStyles = {
     height: '100%',
     marginTop: 0,
     marginRight: spacing40,
-    marginBottom: 0,
+    marginBottom: spacing10,
     marginLeft: spacing40,
     display: 'flex',
     flexDirection: 'column',
@@ -18,16 +18,22 @@ const columnStyles = {
 };
 
 
-// // Styles for the card
+// Styles for the card
 const styles = () => ({
     card: {
+        height: '90%',
         marginRight: spacing40,
         marginLeft: spacing40,
-        paddingTop: spacing10
+        paddingBottom: spacing10
     },
     text: {
         marginRight: spacing40,
         marginLeft: spacing40
+    },
+    buttonContainer: {
+        marginTop: spacing10,
+        marginBottom: spacing10,
+        paddingBottom: spacing40
     }
 });
 
@@ -145,32 +151,36 @@ const CanvasCard = (props) => {
                 <div className={classes.card}>
                     {persons.map((person) => {
                         const bannerId = person.credentials.filter((cred) => cred.type === 'bannerId')[0]?.value;
-
                         return (
                             <Fragment key={person.id}>
                                 {canvasData.length > 0 ? (
-                                    <Table striped bordered hover>
-                                        <TableBody>
-                                            {canvasData.sort(sortCoursesByDate).slice(0, 20).map(course => (
-                                                <TableRow key={course.id}>
-                                                    <TableCell style={columnStyles}>
-                                                        {course.name} - {course.enrollments[0]?.computed_current_score || 'N/A'}
-                                                    </TableCell>
-                                                </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
+                                    <Fragment>
+                                        <Table striped bordered hover>
+                                            <TableBody>
+                                                {canvasData.sort(sortCoursesByDate).slice(0, 20).map(course => (
+                                                    <TableRow key={course.id}>
+                                                        <TableCell style={columnStyles}>
+                                                            {course.name} - {course.enrollments[0]?.computed_current_score || 'N/A'}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                        <div className={classes.buttonContainer}>
+                                            <Button href="https://canvas.uiw.edu/courses" target="_blank">Go to Canvas</Button>
+                                        </div>
+                                    </Fragment>
                                 ) : (
                                     <div>
-                                    <p>We apologize for the inconvenience. There seems to be an issue.</p>
-                                    <p>Please email <a href="mailto:webteam@uiwtx.edu">webteam@uiwtx.edu</a> with the following information:</p>
-                                    <ul>
-                                    <li>A screenshot of the issue you&apos;re facing.</li>
-                                      <li>The device you are using.</li>
-                                      <li>The browser you are on.</li>
-                                      <li>Any other information you think might be useful.</li>
-                                    </ul>
-                                  </div>
+                                        <p>We apologize for the inconvenience. There seems to be an issue.</p>
+                                        <p>Please email <a href="mailto:webteam@uiwtx.edu">webteam@uiwtx.edu</a> with the following information:</p>
+                                        <ul>
+                                            <li>A screenshot of the issue you&apos;re facing.</li>
+                                            <li>The device you are using.</li>
+                                            <li>The browser you are on.</li>
+                                            <li>Any other information you think might be useful.</li>
+                                        </ul>
+                                    </div>
                                 )}
                             </Fragment>
                         );
