@@ -1,4 +1,4 @@
-# Ellucian Experience - Courses and Grades
+# Ellucian Experience - Courses
 ## Introduction
 This project is a custom card for the Ellucian Experience platform, designed to enhance the student experience by providing a quick and intuitive overview of their current courses and grades. Leveraging the React SDK for seamless integration with the Ellucian Experience, this extension offers students a personalized view of their academic progress, with data fetched from Canvas using AWS Lambda as middleware.
 
