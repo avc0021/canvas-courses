@@ -10,9 +10,10 @@ Responsive Design: Ensures a consistent and accessible user experience across de
 ## How It Works
 The Ellucian Experience Card for Courses and Grades interfaces with Canvas to provide up-to-date academic information. Here's how the data flow works:
 
-Authentication: Users are authenticated on the Ellucian Experience platform using their institution credentials.
-AWS Lambda Middleware: Custom AWS Lambda functions act as middleware to securely fetch the user's course and grades data from Canvas.
-Data Retrieval and Presentation: The middleware queries Canvas for the current course enrollments and associated grades, then formats and displays this data within the card, offering a snapshot of the user's academic standing.
+Authentication: Users are authenticated on the Ellucian Experience platform using their institution credentials.</br>
+AWS Lambda Middleware: Custom AWS Lambda functions act as middleware to securely fetch the user's course and grades data from Canvas.</br>
+Data Retrieval and Presentation: The middleware queries Canvas for the current course enrollments and associated grades, then formats and displays this data within the card, offering a snapshot of the user's academic standing.</br>
+Direct Canvas Routing: A dedicated button at the bottom of the card allows users to navigate directly to Canvas, facilitating immediate action on their to-do items.</br>
 
 ## Architectural Overview
 Canvas LMS Integration: Utilizes the Canvas LMS API to access course and grade information.
