@@ -5,7 +5,7 @@ exports.handler = async (event) => {
         const response = await fetch('https://uiw.test.instructure.com/api/v1/users/13295/courses', {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer 13946~kZYmywYqIaxGcPBS6tt0POnujvop3FYbC0YtfThyZACF1Mru5BXjoCSKBApY5I3o'
+                'Authorization': 'Bearer ...'
             }
         });
 

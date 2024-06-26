@@ -1,9 +1,20 @@
-# Overview:
-Will need to reset account in Dev environment and double check api keys after every 3rd Saturday of the month. To do this reach out to Andy Chavez via Teams to reset account. Sometimes he forgets, but make sure you have set up as a Admin otherwise API calls will not work. 
+# Ellucian Experience - Courses
+## Introduction
+This project is a custom card for the Ellucian Experience platform, designed to enhance the student experience by providing a quick and intuitive overview of their current courses and grades. Leveraging the React SDK for seamless integration with the Ellucian Experience, this extension offers students a personalized view of their academic progress, with data fetched from Canvas using AWS Lambda as middleware.
 
-This card displays courses and grades for a user in a single row. Currently as of (9-19-23) the API call is hardcoded for testing purposes. 
+## Features
+Course Overview: Displays a list of the user's current courses, including course names and codes.
+Grades Overview: Shows the most recent grades for each course, allowing students to monitor their academic performance at a glance.
+Responsive Design: Ensures a consistent and accessible user experience across desktop and mobile devices.
 
-You can find the code for the card in the src directory and the code the AWS Lambda function is located in the canvas-api-handler directory.
+## How It Works
+The Ellucian Experience Card for Courses and Grades interfaces with Canvas to provide up-to-date academic information. Here's how the data flow works:
 
-# Additional Notes: 
-Disregard i18n and utils directories. These were created for testing purposes. They are not incorporated into the final card in production. 
+Authentication: Users are authenticated on the Ellucian Experience platform using their institution credentials.</br>
+AWS Lambda Middleware: Custom AWS Lambda functions act as middleware to securely fetch the user's course and grades data from Canvas.</br>
+Data Retrieval and Presentation: The middleware queries Canvas for the current course enrollments and associated grades, then formats and displays this data within the card, offering a snapshot of the user's academic standing.</br>
+Direct Canvas Routing: A dedicated button at the bottom of the card allows users to navigate directly to Canvas, facilitating immediate action on their to-do items.</br>
+
+## Architectural Overview
+Canvas LMS Integration: Utilizes the Canvas LMS API to access course and grade information.
+AWS Lambda: Serverless functions are deployed to AWS Lambda, handling API requests to Canvas. This setup ensures scalability and security, abstracting the data retrieval logic away from the client-side application.
