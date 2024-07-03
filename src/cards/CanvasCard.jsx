@@ -152,7 +152,7 @@ const CanvasCard = (props) => {
             return;
         }
         console.log(`Sending bannerId to Lambda: ${bannerId}`);
-        const endpoint = `https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?bannerId=${bannerId}`;
+        const endpoint = `https://ejfyvqe5ch.execute-api.us-east-2.amazonaws.com/default/canvas_grades?bannerId=${bannerId}`;
 
         try {
             const response = await fetch(endpoint, {
