@@ -40,7 +40,7 @@ const styles = () => ({
         color: '#000000',
         flexShrink: 0,
         fontFamily: 'Arial, sans-serif',
-        boxShadow: '0.5rem 0.5rem black, -0.5rem -0.5rem #f4f4f4',
+        // boxShadow: '0.5rem 0.5rem black, -0.5rem -0.5rem #f4f4f4',
         border: '2px solid #000'
     },
     courseNameContainer: {
