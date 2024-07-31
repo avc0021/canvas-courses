@@ -214,7 +214,7 @@ const CanvasCard = (props) => {
                         </Fragment>
                     ) : (
                         <div>
-                            <p>There is no data to show, but if you feel this is an error, please contact <a href="mailto:webteam@uiwtx.edu">webteam@uiwtx.edu</a> and provide a screenshot or any other information you think might be useful.</p>
+                            <p>There are no items at this time. If you feel this is an error, please contact <a href="mailto:webteam@uiwtx.edu">webteam@uiwtx.edu</a> and provide a screenshot or any other information you think might be useful.</p>
                         </div>
                     )}
                 </div>
