@@ -82,6 +82,12 @@ const styles = () => ({
         textDecoration: 'none !important',
         fontFamily: 'Arial, sans-serif',
         fontSize: '14px'
+    },
+    disclaimer: {
+        fontStyle: 'italic',
+        marginBottom: '10px',
+        fontFamily: 'Arial, sans-serif',
+        fontSize: '12px'
     }
 });
 
@@ -195,6 +201,9 @@ const CanvasCard = (props) => {
                 <div className={classes.card}>
                     {canvasData.length > 0 ? (
                         <Fragment>
+                            <div className={classes.disclaimer}>
+                                Disclaimer: These are unofficial grades, official grades are available through the Registrar&apos;s Office.
+                            </div>
                             {canvasData.map(course => (
                                 <div key={course.id} className={classes.courseRow}>
                                     <div className={classes.courseNameContainer}>
@@ -214,7 +223,7 @@ const CanvasCard = (props) => {
                         </Fragment>
                     ) : (
                         <div>
-                            <p>There are no items at this time. If you feel this is an error, please contact <a href="mailto:webteam@uiwtx.edu">webteam@uiwtx.edu</a> and provide a screenshot or any other information you think might be useful.</p>
+                            <p>There are no items at this time.</p>
                         </div>
                     )}
                 </div>
