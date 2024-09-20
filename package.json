@@ -1,6 +1,6 @@
 {
 	"name": "Canvas Card",
-	"version": "4.4.3",
+	"version": "5.1.1",
 	"description": "This card displays a students most recent courses and grades.",
 	"main": "index.js",
 	"license": "UNLICENSED",
