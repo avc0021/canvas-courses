@@ -15,31 +15,52 @@ exports.handler = async (event) => {
     }
 
     const bannerId = event.queryStringParameters.bannerId;
-       // Log the received bannerId
     console.log(`Received bannerId: ${bannerId}`);
 
     try {
-        const response = await fetch(`https://uiw.instructure.com/api/v1/users/sis_user_id:${bannerId}/courses?include[]=total_scores&enrollment_type=student&per_page=10`, {
+        // Fetch the user's courses from Canvas API
+        const courseResponse = await fetch(`https://uiw.instructure.com/api/v1/users/sis_user_id:${bannerId}/courses?include[]=total_scores&enrollment_type=student&per_page=100`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer 13946~PKu1WJqjNMi16OSD8Z9VQLh9gTc5SLk6bcAS7ZQqWiAj5sp8qshKDo4RCpxQfhLr'
             }
         });
 
-if (response.ok) {
-    const data = await response.json();
-    return {
-        statusCode: 200,
-        body: JSON.stringify(data),
-    };
-} else {
-    const errorData = await response.text(); // get the error message from Canvas
-    console.error(`Canvas API responded with status ${response.status} and body: ${errorData}`);
-    return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Failed to fetch data from Canvas', canvasError: errorData }),
-    };
-}
+        if (!courseResponse.ok) {
+            const errorData = await courseResponse.text();
+            console.error(`Canvas API responded with status ${courseResponse.status} and body: ${errorData}`);
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: 'Failed to fetch data from Canvas', canvasError: errorData }),
+            };
+        }
+
+        const courseData = await courseResponse.json();
+
+        // Fetch the terms from Canvas API
+        const termsResponse = await fetch(`https://uiw.instructure.com/api/v1/accounts/1/terms?per_page=150`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer 13946~PKu1WJqjNMi16OSD8Z9VQLh9gTc5SLk6bcAS7ZQqWiAj5sp8qshKDo4RCpxQfhLr'
+            }
+        });
+
+        if (!termsResponse.ok) {
+            const errorData = await termsResponse.text();
+            console.error(`Terms API responded with status ${termsResponse.status} and body: ${errorData}`);
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: 'Failed to fetch terms from Canvas', canvasError: errorData }),
+            };
+        }
+
+        const termsData = await termsResponse.json();
+
+        // Return both course data and terms data
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ courses: courseData, terms: termsData.enrollment_terms }),
+        };
 
     } catch (error) {
         console.error('Error:', error);
