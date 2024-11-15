@@ -61,7 +61,6 @@ function sortCoursesByDate(a, b) {
 function getCurrentTerm(terms) {
     const currentDate = new Date();
 
-    // Define term ranges
     const fallStart = new Date(currentDate.getFullYear(), 7, 1);
     const fallEnd = new Date(currentDate.getFullYear(), 11, 31);
     const springStart = new Date(currentDate.getFullYear(), 0, 1);
@@ -148,30 +147,33 @@ const CanvasCard = (props) => {
             return;
         }
 
-        const endpoint = `https://rmha5bol53.execute-api.us-east-2.amazonaws.com/default/canvas-api-handler?bannerId=${bannerId}`;
-        // Log the request
+        const endpoint = `https://ejfyvqe5ch.execute-api.us-east-2.amazonaws.com/default/canvas_grades?bannerId=${bannerId}`;
         console.log('Sending request to Lambda with bannerId:', bannerId);
 
         try {
             const response = await fetch(endpoint, { method: 'GET' });
+            console.log('Response status:', response.status);
+
             if (!response.ok) {
                 const responseBody = await response.text();
+                console.error(`HTTP error! Status: ${response.status}, Body: ${responseBody}`);
                 throw new Error(`HTTP error! Status: ${response.status}, Body: ${responseBody}`);
             }
 
             const responseData = await response.json();
             console.log('Received data from Lambda:', responseData);
 
-            // Validate that 'courses' and 'terms' are arrays
             const courses = Array.isArray(responseData.courses) ? responseData.courses : [];
             const terms = Array.isArray(responseData.terms) ? responseData.terms : [];
+
+            console.log('Courses:', courses);
+            console.log('Terms:', terms);
 
             if (terms.length > 0) {
                 const currentTerms = getCurrentTerm(terms);
                 if (currentTerms.length > 0) {
                     const filteredCourses = courses.filter(course => currentTerms.some(term => term.id === course.enrollment_term_id));
                     setCanvasData(filteredCourses);
-                    // Log filtered courses
                     console.log('Filtered courses for current term:', filteredCourses);
                 } else {
                     console.warn("No current term found.");
@@ -225,14 +227,12 @@ const CanvasCard = (props) => {
                         </Fragment>
                     ) : (
                         <div>
-                            {/* Courses error handling */}
                             <p>No courses found for the current term.</p>
                         </div>
                     )}
                 </div>
             ) : (
                 <div className={classes.text}>
-                    {/* No persons error handling */}
                     <p>No user information found. Please contact support.</p>
                 </div>
             )}
